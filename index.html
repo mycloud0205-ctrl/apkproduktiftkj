@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi NILAI PRODUKTIF TJKT - SMK KP BALEENDAH </title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* --- VARIABLES SESUAI GAMBAR REFERENSI --- */
+    :root {
+      /* Palette Warna */
+      --sidebar-bg: #2b369e; /* Biru Indigo (Warna Utama Sidebar) */
+      --sidebar-dark: #1f2675; /* Biru Lebih Gelap (User Panel & Header) */
+      --accent-orange: #ffb400; /* Orange/Kuning (Indikator Aktif) */
+      
+      --bg-body: #f3f6fd; /* Light Blue-Grey (Background Dashboard) */
+      
+      /* Warna Teks */
+      --text-sidebar: #e0e7ff; /* Putih Kebiruan */
+      --text-sidebar-muted: #a5b4fc;
+      --text-main: #334155;
+
+      /* Shadows & Effects */
+      --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* --- LOGIN PAGE --- */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #eef2f6;
+      background-image: url('https://i.postimg.cc/9ffx49qK/Whats-App-Image-2021-05-26-at-10-04-40-e1701226382677.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .login-box {
+      background: white;
+      border-radius: 20px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 50px rgba(43, 54, 158, 0.15);
+      max-width: 450px;
+      width: 100%;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-container { text-align: center; margin-bottom: 25px; }
+    
+    .logo {
+      width: 70px;
+      height: 70px;
+      background: var(--sidebar-bg);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: white;
+      box-shadow: 0 8px 16px rgba(43, 54, 158, 0.2);
+    }
+
+    .login-box h2 {
+      color: var(--sidebar-bg);
+      margin-bottom: 5px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .login-subtitle {
+      color: #64748b;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-group { margin-bottom: 20px; position: relative; }
+    .input-wrapper { position: relative; display: flex; align-items: center; }
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      color: #94a3b8;
+      font-size: 18px;
+      z-index: 2;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 18px 14px 48px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #1e293b;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--sidebar-bg);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(43, 54, 158, 0.1);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 16px;
+      color: #94a3b8;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 15px;
+      background: var(--sidebar-bg);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(43, 54, 158, 0.2);
+    }
+
+    .btn-login:hover {
+      background: #1f2675;
+      transform: translateY(-2px);
+    }
+
+    .error-msg {
+      color: #ef4444;
+      background: #fef2f2;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+      font-size: 13px;
+      border: 1px solid #fee2e2;
+    }
+
+    /* --- DASHBOARD LAYOUT --- */
+    .dashboard { display: none; min-height: 100vh; }
+    .dashboard.active { display: flex; }
+
+    /* --- SIDEBAR (Deep Indigo) --- */
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar-bg);
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.05);
+    }
+
+    .sidebar.collapsed { left: -280px; }
+
+    /* HEADER SIDEBAR (Diperbarui: Warna Lebih Gelap) */
+    .sidebar-header {
+      background: var(--sidebar-dark); /* Menggunakan warna biru gelap */
+      padding: 0 30px;
+      height: 80px; /* Tinggi header disamakan dengan Navbar */
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 0; /* Margin dihapus agar menyatu */
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Shadow pemisah */
+    }
+
+    .school-icon {
+      font-size: 24px;
+      background: rgba(255,255,255,0.15);
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      color: #fff;
+    }
+
+    .school-text-group { display: flex; flex-direction: column; }
+
+    .school-name {
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .school-location-text {
+      color: var(--text-sidebar-muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Menu Area */
+    .sidebar-menu { 
+      padding: 20px; 
+      flex-grow: 1; 
+      overflow-y: auto; 
+    }
+
+    .menu-item {
+      padding: 14px 20px;
+      margin-bottom: 8px;
+      color: var(--text-sidebar-muted);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 14px;
+      border-radius: 10px;
+      border-left: 4px solid transparent;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    /* STATE AKTIF (Border Orange Kiri) */
+    .menu-item.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-weight: 600;
+      border-left: 4px solid var(--accent-orange);
+      border-radius: 4px 10px 10px 4px;
+    }
+
+    /* User Panel Bawah */
+    .user-status-panel {
+      margin: 20px;
+      padding: 15px;
+      background: var(--sidebar-dark);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(255,255,255,0.05); /* Sedikit border halus */
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent-orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .user-details { flex-grow: 1; overflow: hidden; }
+    
+    .user-details .user-name-sidebar {
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-role-sidebar {
+      color: var(--text-sidebar-muted);
+      font-size: 11px;
+    }
+
+    /* --- MAIN CONTENT & NAVBAR --- */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      transition: all 0.3s ease;
+      background: var(--bg-body);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content.expanded { margin-left: 0; }
+
+    /* --- NAVBAR (PUTIH SOLID & JELAS) --- */
+    .navbar {
+      height: 80px;
+      padding: 0 35px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .navbar-left { display: flex; align-items: center; gap: 20px; }
+
+    .toggle-btn {
+      background: #f8fafc;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+    .toggle-btn:hover { background: #e2e8f0; color: var(--sidebar-bg); }
+
+    .navbar-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e293b;
+      letter-spacing: -0.5px;
+    }
+
+    .navbar-right { display: flex; align-items: center; gap: 20px; }
+    
+    .user-info {
+      background: #f8fafc;
+      padding: 8px 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #f1f5f9;
+      transition: all 0.2s;
+    }
+    .user-info:hover { background: #f1f5f9; border-color: #e2e8f0; }
+
+    .user-name { font-weight: 700; color: #1e293b; font-size: 14px; }
+    .user-role { font-size: 12px; color: var(--sidebar-bg); font-weight: 600; }
+    
+    .user-menu-container { position: relative; }
+    .dropdown-arrow { font-size: 10px; color: #94a3b8; transition: transform 0.2s; }
+    
+    .user-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 130%;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      min-width: 160px;
+      z-index: 1100;
+      overflow: hidden;
+      border: 1px solid #f1f5f9;
+      animation: fadeIn 0.2s;
+    }
+    .user-dropdown-menu.active { display: block; }
+    
+    .user-dropdown-menu a {
+      display: block;
+      padding: 12px 20px;
+      color: #334155;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .user-dropdown-menu a:hover { background-color: #f8fafc; color: var(--sidebar-bg); }
+
+    /* --- CONTENT AREA & CARDS --- */
+    .content { padding: 30px 35px; flex-grow: 1; }
+
+    .page-section { display: none; animation: fadeIn 0.4s; }
+    .page-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 25px;
+      border: none;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .table-controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    #searchStudentInput {
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 250px;
+    }
+
+    .table-select {
+      padding: 8px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+    }
+
+    .pagination-container {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+
+    .pagination-info {
+      font-size: 13px;
+      color: #64748b;
+    }
+    
+    .pagination-buttons button {
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 0 4px;
+      transition: all 0.2s;
+    }
+
+    .pagination-buttons button:hover {
+      background: var(--sidebar-bg);
+      color: white;
+      border-color: var(--sidebar-bg);
+    }
+    
+    .pagination-buttons button.active {
+      background: var(--sidebar-bg);
+      color: white;
+      border-color: var(--sidebar-bg);
+      font-weight: 700;
+    }
+
+    .pagination-buttons button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* --- COUNTDOWN --- */
+    .countdown-container { text-align: center; padding: 20px; }
+    .countdown-title { font-size: 24px; color: #1e293b; margin-bottom: 40px; font-weight: 700; }
+    
+    .countdown-display { display: flex; justify-content: center; gap: 20px; flex-wrap: nowrap; overflow: hidden; }
+    
+    .countdown-box {
+      background: white;
+      color: var(--sidebar-bg);
+      padding: 25px;
+      border-radius: 16px;
+      flex-shrink: 1;
+      box-shadow: var(--shadow-card);
+      border-bottom: 4px solid var(--sidebar-bg);
+    }
+    
+    .countdown-number { font-size: 42px; font-weight: 800; margin-bottom: 5px; color: var(--sidebar-bg); }
+    .countdown-label { font-size: 13px; font-weight: 600; text-transform: uppercase; color: #64748b; }
+
+    /* --- ANNOUNCEMENT --- */
+    .announcement-box {
+      background: linear-gradient(135deg, #2b369e 0%, #4c5add 100%);
+      color: white;
+      padding: 35px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 20px rgba(43, 54, 158, 0.2);
+    }
+    .announcement-title { font-size: 24px; margin-bottom: 10px; font-weight: 700; }
+    .announcement-message { font-size: 16px; opacity: 0.9; line-height: 1.6; }
+
+    /* --- RESULT --- */
+    .result-card { text-align: center; padding: 40px; }
+    .result-status {
+      display: inline-block;
+      padding: 12px 40px;
+      border-radius: 50px;
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .result-status.lulus { background: #d1fae5; color: #047857; }
+    .result-status.tidak-lulus { background: #fee2e2; color: #b91c1c; }
+
+    .result-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+      text-align: left;
+    }
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: linear-gradient(145deg, #ffffff, #f7f9fc);
+      border: 1px solid #eef2f6;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 5px 5px 15px #e6eaf3, -5px -5px 15px #ffffff;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .result-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 10px 10px 20px #d9dde6, -10px -10px 20px #ffffff;
+      border-color: var(--accent-orange);
+    }
+    .result-item-icon {
+      flex-shrink: 0;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--bg-body);
+      font-size: 22px;
+      color: var(--sidebar-bg);
+      box-shadow: inset 2px 2px 5px #d9dde6, inset -2px -2px 5px #ffffff;
+    }
+    .result-item-content {
+      overflow: hidden;
+    }
+    .result-label {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .result-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      background: #fff;
+    }
+
+    .stat-card-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #fff;
+    }
+    
+    .stat-card-icon.total { background: #3b82f6; }
+    .stat-card-icon.passed { background: #22c55e; }
+    .stat-card-icon.failed { background: #ef4444; }
+
+    .stat-card-info .value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .stat-card-info .label {
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    /* --- TABLE (Versi Keren) --- */
+    .table-container { 
+      overflow-x: auto; 
+      border-radius: 16px;
+      border: 1px solid #e2e8f0; 
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      background: white;
+    }
+
+    table { 
+      width: 100%; 
+      border-collapse: separate; 
+      border-spacing: 0;
+      background: white;
+    }
+    
+    table th {
+      background: var(--sidebar-bg); /* Warna Header Biru Sidebar */
+      color: white; /* Teks Putih */
+      padding: 18px 20px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 4px solid var(--accent-orange); /* Aksen Orange */
+      position: sticky;
+      top: 0;
+    }
+
+    table th:first-child { border-top-left-radius: 14px; }
+    table th:last-child { border-top-right-radius: 14px; }
+
+    table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    
+    table tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    table tbody tr:hover td {
+      background-color: #e0e7ff;
+      color: var(--sidebar-bg);
+      font-weight: 600;
+    }
+
+    table tr:last-child td { 
+      border-bottom: none; 
+    }
+
+    /* --- BUTTONS --- */
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--sidebar-bg); color: white; box-shadow: 0 4px 10px rgba(43, 54, 158, 0.2); }
+    .btn-primary:hover { background: #1f2675; transform: translateY(-2px); }
+    
+    .btn-warning { background: #f59e0b; color: white; }
+    .btn-danger { background: #ef4444; color: white; }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+    /* --- MODAL --- */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      animation: slideUp 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 20px; font-weight: 700; color: #1e293b; }
+    .modal-close { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    
+    .form-row { margin-bottom: 15px; }
+    .form-row label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #475569; }
+    .form-row input, .form-row select, .form-row textarea {
+      width: 100%;
+      padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 8px;
+      font-size: 14px; color: #1e293b; background: white; font-family: inherit;
+    }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus { outline: none; border-color: var(--sidebar-bg); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+
+    /* --- UTILS --- */
+    .hidden { display: none !important; }
+    .loading { text-align: center; padding: 30px; }
+    .loading-spinner {
+      border: 3px solid #f1f5f9; border-top: 3px solid var(--sidebar-bg);
+      border-radius: 50%; width: 40px; height: 40px; animation: spin 0.8s linear infinite; margin: 0 auto 10px;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar { left: -280px; }
+      .sidebar.collapsed { left: 0; }
+      .main-content { margin-left: 0; }
+      .navbar { padding: 0 20px; }
+      .content { padding: 20px; }
+      .login-box { padding: 40px 25px; }
+    }
+    
+    @media (max-width: 480px) {
+      .countdown-box {
+        padding: 15px 10px; /* Reduce padding */
+      }
+      .countdown-number {
+        font-size: 28px; /* Reduce font size */
+      }
+      .countdown-label {
+        font-size: 11px; /* Reduce label size */
+      }
+      .countdown-display {
+        gap: 10px; /* Reduce gap */
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div id="pageLoader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2b369e; display: flex; justify-content: center; align-items: center; z-index: 9999; color: white; flex-direction: column; gap: 15px;">
+    <div class="loading-spinner" style="border-top-color: #ffb400; border-color: rgba(255,255,255,0.2);"></div>
+    <div style="font-weight: 600; font-size: 16px;">Memuat Sistem...</div>
+  </div>
+  
+  <div id="loginPage" class="login-container" style="display: none;">
+    <div class="login-box">
+      <div class="logo-container">
+        <div class="logo">🎓</div>
+      </div>
+      <h2> APLIKASI NILAI Mapel PRODUKTIF</h2>
+      <p class="login-subtitle">SMK KP BALEENDAH - Bandung</p>
+      
+      <div id="loginError" class="error-msg"></div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">📋</span>
+            <input type="text" id="loginNisn" placeholder="Masukkan NIS" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="loginPassword" placeholder="Masukkan Password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁️</span>
+          </div>
+        </div>
+        <button type="submit" class="btn-login">Masuk Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="studentDashboard" class="dashboard">
+    <div class="sidebar" id="studentSidebar">
+      <div class="sidebar-header">
+        <span class="school-icon">🎓</span>
+        <div class="school-text-group">
+          <span class="school-name">SMK KP BALEENDAH</span>
+          <div class="school-location-text">Baleendah, Bandung</div>
+           <div class="school-location-text">Asep Komarudin, S.Kom</div>
+        </div>
+      </div>
+      
+      <div class="sidebar-menu">
+        <div class="menu-item active" onclick="showPage(this, 'student', 'studentHome')">
+          <span>📊</span> Beranda
+        </div>
+      </div>
+
+      <div class="user-status-panel">
+        <div class="user-avatar">👤</div>
+        <div class="user-details">
+          <p id="studentNameSidebar" class="user-name-sidebar">-</p>
+          <p id="studentstatus" class="user-status_nilai"></p>
+          <p class="user-role-sidebar">Siswa</p>
+        <p class="user-status_nilai"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content" id="studentMainContent">
+      <div class="navbar">
+        <div class="navbar-left">
+          <button class="toggle-btn" onclick="toggleSidebar('student')">☰</button>
+          <div class="navbar-title">Pengumuman Nilai TJKT</div>
+        </div>
+        <div class="navbar-right">
+          <div class="user-menu-container">
+            <div class="user-info" onclick="toggleUserMenu()">
+              <div class="user-details-nav">
+                <div class="user-name" id="studentNameNav">-</div>
+                <div class="user-role">Siswa</div>
+                 <p id="studentstatus" class="user-status_nilai"></p>
+               <div class="result-value" id="studentResultName">-</div>
+                            </div>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="user-dropdown-menu" id="studentUserDropdown">
+              <a href="#" onclick="doLogout()">🚪 Keluar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="studentHome" class="page-section active">
+          
+          <div id="countdownSection" class="card" style="border: none; background: transparent; box-shadow: none;">
+            <div class="countdown-container">
+              <h2 class="countdown-title">Pengumuman Nilai akan dibuka dalam:</h2>
+              <div class="countdown-display">
+                <div class="countdown-box">
+                  <div class="countdown-number" id="countdownDays">00</div>
+                  <div class="countdown-label">Hari</div>
+                </div>
+                <div class="countdown-box">
+                  <div class="countdown-number" id="countdownHours">00</div>
+                  <div class="countdown-label">Jam</div>
+                </div>
+                <div class="countdown-box">
+                  <div class="countdown-number" id="countdownMinutes">00</div>
+                  <div class="countdown-label">Menit</div>
+                </div>
+                <div class="countdown-box">
+                  <div class="countdown-number" id="countdownSeconds">00</div>
+                  <div class="countdown-label">Detik</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="resultSection" class="hidden">
+            <div id="announcementBox" class="announcement-box">
+              <h2 class="announcement-title" id="announcementTitle">-</h2>
+              <p class="announcement-message" id="announcementMessage">-</p>
+            </div>
+
+            <div class="result-card card">
+              <div class="result-header" style="justify-content: center; flex-direction: column;">
+                <h2 style="font-weight: 800; color: #1e293b;">Hasil NILAI Produktif TJKT</h2>
+                <div class="result-status" id="studentStatus">-</div>
+              </div>
+              <div class="result-details">
+                <div class="result-item">
+                  <div class="result-label">Nama Lengkap</div>
+                  <div class="result-value" id="studentResultName">-</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-label">NIS</div>
+                  <div class="result-value" id="studentResultNisn">-</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-label">Kelas</div>
+                  <div class="result-value" id="studentResultKelas">-</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-label">Jurusan</div>
+                  <div class="result-value" id="studentResultJurusan">-</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminDashboard" class="dashboard">
+    <div class="sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <span class="school-icon">🎓</span>
+        <div class="school-text-group">
+          <span class="school-name">SMK KP Baleendah</span>
+          <div class="school-location-text">Bandung</div>
+        </div>
+      </div>
+      
+            <div class="sidebar-menu">
+              <div class="menu-item active" onclick="showPage(this, 'admin', 'adminDashboardPage')">
+                <span>📊</span> Dashboard
+              </div>
+              <div class="menu-item" onclick="showPage(this, 'admin', 'adminAnnouncements')">
+                <span>📢</span> Kelola Pengumuman
+              </div>
+              <div class="menu-item" onclick="showPage(this, 'admin', 'adminStudents')">
+                <span>👨‍🎓</span> Kelola Data Siswa
+              </div>
+            </div>
+            
+            <div class="user-status-panel">
+              <div class="user-avatar">👤</div>
+              <div class="user-details">
+                <p id="adminNameSidebar" class="user-name-sidebar">-</p>
+                <p class="user-role-sidebar">Administrator</p>
+              </div>
+            </div>
+          </div>
+      
+          <div class="main-content" id="adminMainContent">
+            <div class="navbar">
+              <div class="navbar-left">
+                <button class="toggle-btn" onclick="toggleSidebar('admin')">☰</button>
+                <div class="navbar-title">Panel Admin</div>
+              </div>
+              <div class="navbar-right">
+                <div class="user-menu-container">
+                  <div class="user-info" onclick="toggleUserMenu()">
+                    <div class="user-details-nav">
+                      <div class="user-name" id="adminNameNav">-</div>
+                      <div class="user-role">Administrator</div>
+                    </div>
+                    <span class="dropdown-arrow">▼</span>
+                  </div>
+                  <div class="user-dropdown-menu" id="adminUserDropdown">
+                    <a href="#" onclick="doLogout()">🚪 Keluar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="content">
+              <div id="adminDashboardPage" class="page-section active">
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="card-title">Statistik Nilai Siswa TJKT</h2>
+                  </div>
+                  <div id="statsContainer" class="stats-container">
+                    <!-- Stats cards will be loaded here -->
+                  </div>
+                  <div class="chart-container" style="position: relative; height:300px; margin-top: 40px;">
+                    <canvas id="graduationChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            
+              <div id="adminAnnouncements" class="page-section">
+                <div class="card">
+                  <div class="card-header">
+                    <h2 class="card-title">Daftar Pengumuman</h2>
+                    <button class="btn btn-primary" onclick="openAnnouncementModal()">+ Buat Baru</button>
+                  </div>
+                  <div id="announcementsLoading" class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Mengambil data...</p>
+                  </div>
+                  <div id="announcementsTable" class="table-container hidden"></div>
+                </div>
+              </div>
+        <div id="adminStudents" class="page-section">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Database Siswa</h2>
+              <div class="table-controls">
+                <input type="text" id="searchStudentInput" onkeyup="renderStudentsTable()" placeholder="Cari siswa...">
+                <select id="statusFilter" class="table-select" onchange="renderStudentsTable(true)">
+                  <option value="all">Semua Status</option>
+                  <option value="Aman">Aman</option>
+                  <option value="Remedial">Remedial</option>
+                </select>
+                <select id="studentRowsPerPage" class="table-select" onchange="renderStudentsTable(true)">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="100">100</option>
+                  <option value="all">Semua</option>
+                </select>
+                <button class="btn btn-primary" onclick="openStudentModal()">+ Tambah Siswa</button>
+              </div>
+            </div>
+            <div id="studentsLoading" class="loading">
+              <div class="loading-spinner"></div>
+              <p>Mengambil data...</p>
+            </div>
+            <div id="studentsTable" class="table-container hidden"></div>
+            <div id="studentPagination" class="pagination-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="announcementModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="announcementModalTitle">Tambah Pengumuman</h3>
+        <button class="modal-close" onclick="closeAnnouncementModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="announcementForm">
+          <input type="hidden" id="announcementId">
+          <div class="form-row">
+            <label>Judul Pengumuman *</label>
+            <input type="text" id="announcementTitleInput" required placeholder="Contoh: Pengumuman Kelulusan 2025">
+          </div>
+          <div class="form-row">
+            <label>Pesan Pengumuman *</label>
+            <textarea id="announcementMessageInput" required placeholder="Tulis pesan lengkap di sini..."></textarea>
+          </div>
+          <div class="form-row">
+            <label>Waktu Countdown (Hitung Mundur) *</label>
+            <input type="datetime-local" id="announcementCountdownInput" required>
+          </div>
+          <div class="form-row">
+            <label>Status Publikasi</label>
+            <select id="announcementPublishedInput">
+              <option value="TRUE">Publish (Tampilkan)</option>
+              <option value="FALSE">Draft (Sembunyikan)</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" style="background: #f1f5f9; color: var(--text-main);" onclick="closeAnnouncementModal()">Batal</button>
+        <button class="btn btn-primary" onclick="saveAnnouncement()">Simpan Data</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="studentModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="studentModalTitle">Tambah Data Siswa</h3>
+        <button class="modal-close" onclick="closeStudentModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="studentForm">
+          <input type="hidden" id="studentId">
+          <div class="form-row">
+            <label>Nama Lengkap *</label>
+            <input type="text" id="studentNameInput" required>
+          </div>
+          <div class="form-row">
+            <label>NISN *</label>
+            <input type="text" id="studentNisnInput" required>
+          </div>
+          <div class="form-row">
+            <label>Kelas *</label>
+            <input type="text" id="studentKelasInput" required>
+          </div>
+          <div class="form-row">
+            <label>Jurusan *</label>
+            <input type="text" id="studentJurusanInput" required>
+          </div>
+          <div class="form-row">
+            <label>Status NILAI *</label>
+            <select id="studentStatusInput" required>
+              <option value="Aman">Aman</option>
+              <option value="Remedial">Remedial</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" style="background: #f1f5f9; color: var(--text-main);" onclick="closeStudentModal()">Batal</button>
+        <button class="btn btn-primary" onclick="saveStudent()">Simpan Data</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    });
+
+    let currentUser = null;
+    let countdownInterval = null;
+    let announcementData = null;
+
+    function formatDateIndonesia(isoString) {
+      if (!isoString) return '-';
+      const date = new Date(isoString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+
+      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
+
+    function togglePassword() {
+      const input = document.getElementById('loginPassword');
+      if (input.type === 'password') {
+        input.type = 'text';
+      } else {
+        input.type = 'password';
+      }
+    }
+
+    // Login
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nisn = document.getElementById('loginNisn').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      const btn = document.querySelector('.btn-login');
+      const originalText = btn.textContent;
+      btn.textContent = 'Memproses...';
+      btn.disabled = true;
+
+      google.script.run
+        .withSuccessHandler((res) => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          
+          if (res.success) {
+            // SIMPAN SESI DI BROWSER SAAT SUKSES
+            // sessionStorage hilang saat tab ditutup (Lebih aman untuk komputer umum)
+            // Gunakan localStorage jika ingin sesi bertahan walau browser ditutup
+            sessionStorage.setItem('appSession', JSON.stringify(res.user));
+            
+            handleLoginSuccess(res.user);
+          } else {
+            showLoginError(res.message);
+          }
+        })
+        .withFailureHandler((err) => {
+          btn.textContent = originalText;
+          btn.disabled = false;
+          handleLoginError(err);
+        })
+        .login(nisn, password);
+    });
+
+    function handleLoginSuccess(user) {
+      currentUser = user;
+      document.getElementById('loginPage').style.display = 'none';
+      
+      if (currentUser.role === 'siswa') {
+        showStudentDashboard();
+      } else if (currentUser.role === 'admin') {
+        showAdminDashboard();
+      }
+    }
+
+    function handleLoginError(error) {
+      showLoginError('Terjadi kesalahan: ' + error.message);
+    }
+
+    function showLoginError(message) {
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    // Logout
+function doLogout() {
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda akan keluar dari sesi ini.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, keluar!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+          // 1. PENTING: Hapus sesi dari penyimpanan Browser
+          // Ini kunci agar saat browser direfresh/dibuka ulang, user harus login lagi.
+          sessionStorage.removeItem('appSession');
+
+          // 2. Panggil fungsi server (opsional/formalitas) lalu reset UI
+          google.script.run
+            .withSuccessHandler(function() {
+              // Sembunyikan semua dashboard
+              document.getElementById('studentDashboard').classList.remove('active');
+              document.getElementById('adminDashboard').classList.remove('active');
+              
+              // Tampilkan kembali halaman login
+              document.getElementById('loginPage').style.display = 'flex';
+              
+              // Bersihkan form login agar kosong untuk pengguna berikutnya
+              document.getElementById('loginForm').reset();
+              
+              // Reset variabel global
+              currentUser = null;
+              
+              // Hentikan hitung mundur jika sedang berjalan
+              if(countdownInterval) clearInterval(countdownInterval);
+            })
+            .logout();
+        }
+      });
+    }
+    // Toggle Sidebar
+    function toggleSidebar(type) {
+      const sidebar = document.getElementById(type + 'Sidebar');
+      const mainContent = document.getElementById(type + 'MainContent');
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+    }
+
+    // Show Page
+    function showPage(element, dashboard, pageId) {
+      const dashboardPrefix = dashboard === 'admin' ? 'admin' : 'student';
+      const sections = document.querySelectorAll('#' + dashboardPrefix + 'Dashboard .page-section');
+      sections.forEach(s => s.classList.remove('active'));
+      const menuItems = document.querySelectorAll('#' + dashboardPrefix + 'Sidebar .menu-item');
+      menuItems.forEach(m => m.classList.remove('active'));
+      
+      document.getElementById(pageId).classList.add('active');
+      
+      // Highlight menu item logic
+      element.classList.add('active');
+
+      if (dashboard === 'admin') {
+        if (pageId === 'adminAnnouncements') loadAnnouncements();
+        else if (pageId === 'adminStudents') loadStudents();
+        else if (pageId === 'adminDashboardPage') loadAdminDashboard();
+      }
+    }
+
+    // Student Dashboard
+    function showStudentDashboard() {
+      document.getElementById('studentDashboard').classList.add('active');
+      document.getElementById('studentNameSidebar').textContent = currentUser.nama_lengkap;
+      document.getElementById('studentNameNav').textContent = currentUser.nama_lengkap;
+      document.getElementById('studentstatus').textContent = currentUser.status_nilai;
+      loadStudentData();
+    }
+
+    function loadStudentData() {
+      google.script.run
+        .withSuccessHandler(function(result) {
+          if (result.success && result.data.length > 0) {
+            const announcement = result.data.find(a => a.published === true || a.published === 'TRUE');
+            if (announcement) {
+              announcementData = announcement;
+              startCountdown(announcement.countdown_iso);
+            }
+          }
+        })
+        .getAnnouncements();
+    }
+
+    function startCountdown(countdownIso) {
+      const targetDate = new Date(countdownIso);
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      countdownInterval = setInterval(function() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          clearInterval(countdownInterval);
+          showAnnouncementResult();
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          document.getElementById('countdownDays').textContent = String(days).padStart(2, '0');
+          document.getElementById('countdownHours').textContent = String(hours).padStart(2, '0');
+          document.getElementById('countdownMinutes').textContent = String(minutes).padStart(2, '0');
+          document.getElementById('countdownSeconds').textContent = String(seconds).padStart(2, '0');
+        }
+      }, 1000);
+    }
+
+    function showAnnouncementResult() {
+      document.getElementById('countdownSection').classList.add('hidden');
+      document.getElementById('resultSection').classList.remove('hidden');
+      if (announcementData) {
+        document.getElementById('announcementTitle').textContent = announcementData.title;
+        document.getElementById('announcementMessage').textContent = announcementData.message;
+      }
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+          if (result.success) {
+            const data = result.data;
+            
+            // Set status
+            const statusEl = document.getElementById('studentStatus');
+            statusEl.textContent = data.status_kelulusan;
+            statusEl.className = 'result-status ' + (data.status_kelulusan === 'AMAN' ? 'AMAN' : 'Remedial');
+
+            // Build dynamic result items
+            const resultDetailsContainer = document.querySelector('.result-details');
+            resultDetailsContainer.innerHTML = ''; // Clear existing items
+
+            let resultHtml = '';
+            // Define the order for standard fields
+            const standardFields = ['nama_lengkap', 'nis', 'kelas', 'jurusan'];
+            const fieldsToSkip = ['id', 'status_kelulusan'];
+            
+            const iconMap = {
+              'nama_lengkap': '👤',
+              'nisn': '🆔',
+              'kelas': '🏫',
+              'jurusan': '🧪',
+              'default': '📚'
+            };
+
+            const getIcon = (key) => iconMap[key.toLowerCase()] || iconMap['default'];
+
+            // Helper function to build an item
+            const buildItem = (key, value) => {
+              const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+              const icon = getIcon(key);
+              return `
+                <div class="result-item">
+                  <div class="result-item-icon">${icon}</div>
+                  <div class="result-item-content">
+                    <div class="result-label">${label}</div>
+                    <div class="result-value">${value}</div>
+                  </div>
+                </div>
+              `;
+            };
+
+            // 1. Render standard fields in predefined order
+            standardFields.forEach(key => {
+              if (data.hasOwnProperty(key)) {
+                resultHtml += buildItem(key, data[key]);
+              }
+            });
+
+            // 2. Render the rest of the fields (subject scores)
+            for (const key in data) {
+              if (data.hasOwnProperty(key) && !standardFields.includes(key) && !fieldsToSkip.includes(key)) {
+                resultHtml += buildItem(key, data[key]);
+              }
+            }
+            resultDetailsContainer.innerHTML = resultHtml;
+          }
+        })
+        .getStudentGraduationData(currentUser.nisn);
+    }
+
+    // Admin Dashboard
+    let graduationChartInstance = null;
+    function showAdminDashboard() {
+      document.getElementById('adminDashboard').classList.add('active');
+      document.getElementById('adminNameSidebar').textContent = currentUser.nama_lengkap.kelas;
+      document.getElementById('adminNameNav').textContent = currentUser.nama_lengkap.kelas;
+      loadAdminDashboard(); // Load stats on initial dashboard view
+    }
+
+    function loadAdminDashboard() {
+      google.script.run
+        .withSuccessHandler(function(result) {
+          if (result.success) {
+            const stats = result.data;
+            const statsContainer = document.getElementById('statsContainer');
+            statsContainer.innerHTML = `
+              <div class="stat-card">
+                <div class="stat-card-icon total">👨‍🎓</div>
+                <div class="stat-card-info">
+                  <div class="value">${stats.total}</div>
+                  <div class="label">Total Siswa</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon passed">👍</div>
+                <div class="stat-card-info">
+                  <div class="value">${stats.passed}</div>
+                  <div class="label">Siswa Aman</div>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon failed">👎</div>
+                <div class="stat-card-info">
+                  <div class="value">${stats.failed}</div>
+                  <div class="label">Siswa Tidak Aman</div>
+                </div>
+              </div>
+            `;
+            
+            // Draw Chart
+            const ctx = document.getElementById('graduationChart').getContext('2d');
+            if(graduationChartInstance) {
+              graduationChartInstance.destroy();
+            }
+            graduationChartInstance = new Chart(ctx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Aman', 'Remedial'],
+                datasets: [{
+                  label: 'Status Nilai Siswa',
+                  data: [stats.passed, stats.failed],
+                  backgroundColor: [
+                    'rgba(34, 197, 94, 0.7)',
+                    'rgba(239, 68, 68, 0.7)'
+                  ],
+                  borderColor: [
+                    'rgba(34, 197, 94, 1)',
+                    'rgba(239, 68, 68, 1)'
+                  ],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: 'Rasio Kelulusan Siswa'
+                  }
+                }
+              }
+            });
+          }
+        })
+        .getStudentStats();
+    }
+
+    // Announcements Management
+    function loadAnnouncements() {
+      document.getElementById('announcementsLoading').classList.remove('hidden');
+      document.getElementById('announcementsTable').classList.add('hidden');
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+          document.getElementById('announcementsLoading').classList.add('hidden');
+          if (result.success) {
+            displayAnnouncements(result.data);
+          }
+        })
+        .getAnnouncements();
+    }
+
+    function displayAnnouncements(data) {
+      let html = '<table><thead><tr><th>ID</th><th>Judul</th><th>Countdown</th><th>Status</th><th>Aksi</th></tr></thead><tbody>';
+      data.forEach(item => {
+        const status = item.published === true || item.published === 'TRUE' ? 
+          '<span style="padding:4px 10px; background:#dcfce7; color:#166534; border-radius:6px; font-weight:600; font-size:12px;">Published</span>' : 
+          '<span style="padding:4px 10px; background:#f1f5f9; color:#64748b; border-radius:6px; font-weight:600; font-size:12px;">Draft</span>';
+        html += `<tr>
+          <td>${item.id}</td>
+          <td>${item.title}</td>
+          <td>${formatDateIndonesia(item.countdown_iso)}</td>
+          <td>${status}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick='editAnnouncement(${JSON.stringify(item)})'>✏️</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAnnouncementConfirm(${item.id})">🗑️</button>
+          </td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('announcementsTable').innerHTML = html;
+      document.getElementById('announcementsTable').classList.remove('hidden');
+    }
+
+    function openAnnouncementModal() {
+      document.getElementById('announcementModalTitle').textContent = 'Tambah Pengumuman';
+      document.getElementById('announcementForm').reset();
+      document.getElementById('announcementId').value = '';
+      document.getElementById('announcementModal').classList.add('active');
+    }
+
+    function closeAnnouncementModal() {
+      document.getElementById('announcementModal').classList.remove('active');
+    }
+
+    function editAnnouncement(data) {
+      document.getElementById('announcementModalTitle').textContent = 'Edit Pengumuman';
+      document.getElementById('announcementId').value = data.id;
+      document.getElementById('announcementTitleInput').value = data.title;
+      document.getElementById('announcementMessageInput').value = data.message;
+      const isoString = data.countdown_iso;
+      const localDateTime = isoString ? isoString.slice(0, 16) : '';
+      document.getElementById('announcementCountdownInput').value = localDateTime;
+      document.getElementById('announcementPublishedInput').value = data.published === true || data.published === 'TRUE' ? 'TRUE' : 'FALSE';
+      document.getElementById('announcementModal').classList.add('active');
+    }
+
+    function saveAnnouncement() {
+      const id = document.getElementById('announcementId').value;
+      const localDateTime = document.getElementById('announcementCountdownInput').value;
+      const countdown_iso = localDateTime ? `${localDateTime}:00+07:00` : '';
+      const data = {
+        title: document.getElementById('announcementTitleInput').value,
+        message: document.getElementById('announcementMessageInput').value,
+        countdown_iso: countdown_iso,
+        published: document.getElementById('announcementPublishedInput').value
+      };
+      
+      const btn = document.querySelector('#announcementModal .btn-primary');
+      const originalText = btn.textContent;
+      btn.textContent = 'Menyimpan...';
+
+      if (id) {
+        google.script.run
+          .withSuccessHandler(function(result) {
+            btn.textContent = originalText;
+            if (result.success) {
+              closeAnnouncementModal();
+              loadAnnouncements();
+              Toast.fire({ icon: 'success', title: 'Pengumuman berhasil diperbarui' });
+            } else {
+              Toast.fire({ icon: 'error', title: 'Gagal memperbarui: ' + result.message });
+            }
+          })
+          .withFailureHandler(function(err) {
+            btn.textContent = originalText;
+            Toast.fire({ icon: 'error', title: 'Error: ' + err.message });
+          })
+          .updateAnnouncement(id, data);
+      } else {
+        google.script.run
+          .withSuccessHandler(function(result) {
+            btn.textContent = originalText;
+            if (result.success) {
+              closeAnnouncementModal();
+              loadAnnouncements();
+              Toast.fire({ icon: 'success', title: 'Pengumuman berhasil dibuat' });
+            } else {
+              Toast.fire({ icon: 'error', title: 'Gagal membuat: ' + result.message });
+            }
+          })
+          .withFailureHandler(function(err) {
+            btn.textContent = originalText;
+            Toast.fire({ icon: 'error', title: 'Error: ' + err.message });
+          })
+          .createAnnouncement(data);
+      }
+    }
+
+    function deleteAnnouncementConfirm(id) {
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda tidak akan dapat mengembalikan pengumuman ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          google.script.run
+            .withSuccessHandler(function(result) {
+              if (result.success) {
+                Swal.fire(
+                  'Dihapus!',
+                  'Pengumuman telah dihapus.',
+                  'success'
+                );
+                loadAnnouncements();
+              } else {
+                Swal.fire(
+                  'Error!',
+                  'Gagal menghapus pengumuman: ' + result.message,
+                  'error'
+                );
+              }
+            })
+            .withFailureHandler(function(err) {
+              Swal.fire(
+                'Error!',
+                'Terjadi kesalahan saat menghapus pengumuman: ' + err.message,
+                'error'
+              );
+            })
+            .deleteAnnouncement(id);
+        }
+      });
+    }
+
+    // Students Management
+    let allStudentsData = [];
+    let filteredStudentsData = [];
+    let studentCurrentPage = 1;
+
+    function loadStudents() {
+      document.getElementById('studentsLoading').classList.remove('hidden');
+      document.getElementById('studentsTable').classList.add('hidden');
+      document.getElementById('studentPagination').classList.add('hidden');
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+          document.getElementById('studentsLoading').classList.add('hidden');
+          if (result.success) {
+            allStudentsData = result.data;
+            renderStudentsTable(true);
+          }
+        })
+        .getAllGraduationData();
+    }
+
+    function renderStudentsTable(resetPage = false) {
+      if (resetPage) {
+        studentCurrentPage = 1;
+      }
+
+      const searchTerm = document.getElementById('searchStudentInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      const rowsPerPage = document.getElementById('studentRowsPerPage').value;
+
+      filteredStudentsData = allStudentsData.filter(student => {
+        const matchesSearch = (
+          student.nama_lengkap.toLowerCase().includes(searchTerm) ||
+          student.nisn.toLowerCase().includes(searchTerm) ||
+          student.kelas.toLowerCase().includes(searchTerm) ||
+          student.jurusan.toLowerCase().includes(searchTerm)
+        );
+        const matchesStatus = (statusFilter === 'all' || student.status_kelulusan === statusFilter);
+
+        return matchesSearch && matchesStatus;
+      });
+
+      const totalRows = filteredStudentsData.length;
+      const totalPages = rowsPerPage === 'all' ? 1 : Math.ceil(totalRows / rowsPerPage);
+      const startIndex = rowsPerPage === 'all' ? 0 : (studentCurrentPage - 1) * rowsPerPage;
+      const endIndex = rowsPerPage === 'all' ? totalRows : startIndex + parseInt(rowsPerPage);
+      const paginatedData = filteredStudentsData.slice(startIndex, endIndex);
+
+      let html = '<table><thead><tr><th>ID</th><th>Nama</th><th>NIS</th><th>Kelas</th><th>Jurusan</th><th>Status</th><th>Aksi</th></tr></thead><tbody>';
+      if (paginatedData.length > 0) {
+        paginatedData.forEach(item => {
+          let statusStyle = item.status_kelulusan === 'LULUS' ? 'color:#047857; background:#d1fae5;' : 'color:#b91c1c; background:#fee2e2;';
+          html += `<tr>
+            <td>${item.id}</td>
+            <td><strong>${item.nama_lengkap}</strong></td>
+            <td>${item.nisn}</td>
+            <td>${item.kelas}</td>
+            <td>${item.jurusan}</td>
+            <td><span style="padding:4px 10px; border-radius:6px; font-weight:700; font-size:12px; ${statusStyle}">${item.status_kelulusan}</span></td>
+            <td>
+              <button class="btn btn-warning btn-sm" onclick='editStudent(${JSON.stringify(item)})'>✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteStudentConfirm(${item.id}, '${item.nama_lengkap}')">🗑️</button>            </td>
+          </tr>`;
+        });
+      } else {
+        html += '<tr><td colspan="7" style="text-align: center; padding: 20px;">Tidak ada data yang cocok.</td></tr>';
+      }
+      html += '</tbody></table>';
+      
+      document.getElementById('studentsTable').innerHTML = html;
+      document.getElementById('studentsTable').classList.remove('hidden');
+      
+      setupPagination(totalRows, startIndex, endIndex, totalPages);
+    }
+    
+    function setupPagination(totalRows, startIndex, endIndex, totalPages) {
+      const paginationContainer = document.getElementById('studentPagination');
+      if (totalRows <= 0) {
+        paginationContainer.classList.add('hidden');
+        return;
+      }
+      
+      const startEntry = totalRows > 0 ? startIndex + 1 : 0;
+      const endEntry = Math.min(endIndex, totalRows);
+
+      let paginationHtml = `
+        <div class="pagination-info">
+          Menampilkan ${startEntry} sampai ${endEntry} dari ${totalRows} data
+        </div>
+        <div class="pagination-buttons">
+          <button onclick="changeStudentPage(studentCurrentPage - 1)" ${studentCurrentPage === 1 ? 'disabled' : ''}>Sebelumnya</button>
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+        paginationHtml += `<button onclick="changeStudentPage(${i})" class="${studentCurrentPage === i ? 'active' : ''}">${i}</button>`;
+      }
+      
+      paginationHtml += `
+          <button onclick="changeStudentPage(studentCurrentPage + 1)" ${studentCurrentPage === totalPages ? 'disabled' : ''}>Berikutnya</button>
+        </div>
+      `;
+      
+      paginationContainer.innerHTML = paginationHtml;
+      paginationContainer.classList.remove('hidden');
+    }
+
+    function changeStudentPage(page) {
+      const rowsPerPage = document.getElementById('studentRowsPerPage').value;
+      const totalPages = rowsPerPage === 'all' ? 1 : Math.ceil(filteredStudentsData.length / rowsPerPage);
+      
+      if (page < 1 || page > totalPages) {
+        return;
+      }
+      studentCurrentPage = page;
+      renderStudentsTable();
+    }
+
+    function openStudentModal() {
+      document.getElementById('studentModalTitle').textContent = 'Tambah Data Siswa';
+      document.getElementById('studentForm').reset();
+      document.getElementById('studentId').value = '';
+      document.getElementById('studentModal').classList.add('active');
+    }
+
+    function closeStudentModal() {
+      document.getElementById('studentModal').classList.remove('active');
+    }
+
+    function editStudent(data) {
+      document.getElementById('studentModalTitle').textContent = 'Edit Data Siswa';
+      document.getElementById('studentId').value = data.id;
+      document.getElementById('studentNameInput').value = data.nama_lengkap;
+      document.getElementById('studentNisnInput').value = data.nisn;
+      document.getElementById('studentKelasInput').value = data.kelas;
+      document.getElementById('studentJurusanInput').value = data.jurusan;
+      document.getElementById('studentStatusInput').value = data.status_kelulusan;
+      document.getElementById('studentModal').classList.add('active');
+    }
+
+    function saveStudent() {
+      const id = document.getElementById('studentId').value;
+      const data = {
+        nama_lengkap: document.getElementById('studentNameInput').value,
+        nisn: document.getElementById('studentNisnInput').value,
+        kelas: document.getElementById('studentKelasInput').value,
+        jurusan: document.getElementById('studentJurusanInput').value,
+        status_kelulusan: document.getElementById('studentStatusInput').value
+      };
+      
+      const btn = document.querySelector('#studentModal .btn-primary');
+      const originalText = btn.textContent;
+      btn.textContent = 'Menyimpan...';
+
+      if (id) {
+        google.script.run
+          .withSuccessHandler(function(result) {
+            btn.textContent = originalText;
+            if (result.success) {
+              closeStudentModal();
+              loadStudents();
+              Toast.fire({ icon: 'success', title: 'Data siswa berhasil diperbarui' });
+            } else {
+              Toast.fire({ icon: 'error', title: 'Gagal memperbarui: ' + result.message });
+            }
+          })
+          .withFailureHandler(function(err) {
+            btn.textContent = originalText;
+            Toast.fire({ icon: 'error', title: 'Error: ' + err.message });
+          })
+          .updateStudent(id, data);
+      } else {
+        google.script.run
+          .withSuccessHandler(function(result) {
+            btn.textContent = originalText;
+            if (result.success) {
+              closeStudentModal();
+              loadStudents();
+              Toast.fire({ icon: 'success', title: 'Data siswa berhasil dibuat' });
+            } else {
+              Toast.fire({ icon: 'error', title: 'Gagal membuat: ' + result.message });
+            }
+          })
+          .withFailureHandler(function(err) {
+            btn.textContent = originalText;
+            Toast.fire({ icon: 'error', title: 'Error: ' + err.message });
+          })
+          .createStudent(data);
+      }
+    }
+
+    function deleteStudentConfirm(id, studentName) {
+      Swal.fire({
+        title: 'Apakah Anda yakin?',
+        html: `Anda tidak akan dapat mengembalikan data siswa <strong>${studentName}</strong> ini!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          google.script.run
+            .withSuccessHandler(function(result) {
+              if (result.success) {
+                Swal.fire(
+                  'Dihapus!',
+                  'Data siswa telah dihapus.',
+                  'success'
+                );
+                loadStudents();
+              } else {
+                Swal.fire(
+                  'Error!',
+                  'Gagal menghapus data siswa: ' + result.message,
+                  'error'
+                );
+              }
+            })
+            .withFailureHandler(function(err) {
+              Swal.fire(
+                'Error!',
+                'Terjadi kesalahan saat menghapus data siswa: ' + err.message,
+                'error'
+              );
+            })
+            .deleteStudent(id);
+        }
+      });
+    }
+
+    // Check login
+window.addEventListener('load', function() {
+      const loader = document.getElementById('pageLoader');
+      const loginPage = document.getElementById('loginPage');
+
+      // 1. Cek apakah ada data sesi yang tersimpan di browser ini (Client-side)
+      const savedSession = sessionStorage.getItem('appSession');
+
+      if (savedSession) {
+        try {
+          // 2. Jika ada, ubah string JSON kembali menjadi objek
+          currentUser = JSON.parse(savedSession);
+
+          // 3. Validasi apakah data user memiliki role yang benar
+          if (currentUser && currentUser.role) {
+            
+            // Arahkan ke dashboard yang sesuai tanpa perlu memanggil server Google Script
+            if (currentUser.role === 'siswa') {
+              showStudentDashboard();
+            } else if (currentUser.role === 'admin') {
+              showAdminDashboard();
+            }
+            
+            // Pastikan halaman login tetap tersembunyi
+            loginPage.style.display = 'none';
+
+          } else {
+            // Jika data sesi ada tapi strukturnya salah (invalid), paksa login ulang
+            console.warn('Data sesi tidak valid');
+            sessionStorage.removeItem('appSession'); // Bersihkan data rusak
+            loginPage.style.display = 'flex';
+          }
+
+        } catch (e) {
+          // Jika terjadi error saat parsing JSON (data korup), minta login ulang
+          console.error('Error parsing sesi:', e);
+          sessionStorage.removeItem('appSession');
+          loginPage.style.display = 'flex';
+        }
+      } else {
+        // 4. Jika tidak ada sesi tersimpan sama sekali, tampilkan halaman login
+        loginPage.style.display = 'flex';
+      }
+
+      // 5. Terakhir, hilangkan layar loading (spinner)
+      loader.style.display = 'none';
+    });
+
+    function toggleUserMenu() {
+      const studentDashboard = document.getElementById('studentDashboard');
+      let dropdownId = '';
+      if (studentDashboard.classList.contains('active')) {
+        dropdownId = 'studentUserDropdown';
+      } else {
+        dropdownId = 'adminUserDropdown';
+      }
+      const dropdown = document.getElementById(dropdownId);
+      const container = dropdown.closest('.user-menu-container');
+      const arrow = container.querySelector('.dropdown-arrow');
+      
+      dropdown.classList.toggle('active');
+      if (arrow) {
+        arrow.style.transform = dropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    }
+
+    // Close dropdown
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.user-menu-container')) {
+        const dropdowns = document.querySelectorAll('.user-dropdown-menu');
+        dropdowns.forEach(dropdown => {
+          if (dropdown.classList.contains('active')) {
+            dropdown.classList.remove('active');
+            const container = dropdown.closest('.user-menu-container');
+            if (container) {
+              const arrow = container.querySelector('.dropdown-arrow');
+              if (arrow) arrow.style.transform = 'rotate(0deg)';
+            }
+          }
+        });
+      }
+    });
+
+    // Close sidebar when clicking on content area on mobile
+    function closeSidebarOnClick(e) {
+      if (window.innerWidth <= 768) {
+        const activeDashboard = document.querySelector('.dashboard.active');
+        if (!activeDashboard) return;
+        
+        const sidebar = activeDashboard.querySelector('.sidebar');
+        
+        // On mobile, the sidebar is "open" when it HAS the "collapsed" class.
+        if (sidebar && sidebar.classList.contains('collapsed')) {
+          // Check if the click was on the toggle button or its child, if so, do nothing.
+          if (e.target.closest('.toggle-btn')) {
+            return;
+          }
+          
+          const type = sidebar.id.includes('student') ? 'student' : 'admin';
+          toggleSidebar(type); // This will remove the "collapsed" class and hide the sidebar.
+        }
+      }
+    }
+
+    document.getElementById('studentMainContent').addEventListener('click', closeSidebarOnClick);
+    document.getElementById('adminMainContent').addEventListener('click', closeSidebarOnClick);
+  </script>
+</body>
+</html>
